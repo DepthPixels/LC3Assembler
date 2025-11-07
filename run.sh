@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env bash
 
 REPO_URL="https://github.com/DepthPixels/LC3Assembler.git"
 REPO_DIR="LC3Assembler"
