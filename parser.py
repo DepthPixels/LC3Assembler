@@ -1,0 +1,27 @@
+def parse_lines(file_lines):
+  """
+  Reads lines from a file and returns them as a list,
+  stripping whitespace, and returning separated opcode and operands
+  """
+  
+  parsed_data = []
+  extra = []
+  
+  for line in file_lines:
+    if line != "\n":
+      parts = line.split(',')
+      parts = [part.strip() for part in parts]
+      opcode = parts[0]
+      operands = parts[1:] if len(parts) > 1 else []
+      
+      split_code = opcode.split()
+      opcode = split_code[0]
+      if len(split_code) > 1:
+        operands = split_code[1:] + operands
+      
+      parsed_data.append((opcode, operands))
+      
+      if opcode == ".END":
+        break
+    
+  return parsed_data
