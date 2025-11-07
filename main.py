@@ -4,7 +4,7 @@ import mapping
 
 file_location = None
 
-print("\n\n LC-3 Assembler v0.94 \n")
+print("\n LC-3 Assembler v0.94 \n")
 
 sys.argv = sys.argv[1:]
 
@@ -17,6 +17,13 @@ if len(sys.argv) == 2 and (sys.argv[1].endswith('.asm')):
 elif len(sys.argv) == 1 and sys.argv[0].endswith('.asm'):
     file_format = ".bin"
     file_location = sys.argv[0]
+elif len(sys.argv) == 1 and (sys.argv[0] == "-h" or sys.argv[0] == "--help"):
+    print("\n Help \n")
+    print("Usage (main.py): py main.py [options] <sourcefile.asm>\n")
+    print("Usage (LC3Assembler.exe): ./LC3Assembler.exe [options] <sourcefile.asm>\n")
+    print("Options:")
+    print("  -o, --obj       Output in .obj binary format (default is .bin text format)\n")
+    sys.exit(0)
 else:
   sys.exit("Please provide a file location as a command line argument.")
 
