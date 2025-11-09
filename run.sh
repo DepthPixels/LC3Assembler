@@ -11,4 +11,4 @@ else
   git clone "$REPO_URL"
 fi
 
-py $REPO_DIR/main.py "$@"
+python3 $REPO_DIR/main.py "$@"
