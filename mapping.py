@@ -107,15 +107,16 @@ def label_parse(opcodes, operands):
 
 
 def map_special_opcode(opcode, operands, pc):
-    if len(operands) == 1:
-        operands = operands[0]
-        if operands.startswith('x'):
-            operands = operands[1:]
-        if operands.startswith('0x'):
-            operands = operands[2:]
         
     if opcode in hex_convert_pseudo_ops:
-        converted = hex_to_bin(operands)
+        operands = operands[0]
+        if operands.startswith('x') or operands.startswith('0x'):
+            converted = hex_to_bin(operands[1:] if operands.startswith('x') else operands[2:])
+        elif operands.startswith('#'):
+            converted = sign_extend(int(operands[1:]), 16)
+        elif all(char == '0' or char == '1' for char in operands):
+            converted = operands
+        
     elif opcode == ".END":
         return None
     elif opcode in opcode_dict:
@@ -124,11 +125,15 @@ def map_special_opcode(opcode, operands, pc):
         converted = (mapped_opcode, mapped_operand)
     elif opcode in short_ops:
         converted = short_ops[opcode]
-    else:
-        sub_opcode = operands[0]
-        operands = operands[1:]
+    elif opcode in label_dict:
+        operands = [operands] if type(operands) == str else operands
+        if len(operands) > 1:
+            sub_opcode = operands[0]
+            operands = operands[1:]
+        else:
+            sub_opcode = operands[0]
+            operands = []
         converted = map_special_opcode(sub_opcode, operands, pc)
-        label_dict[opcode] = (pc-1)
   
     return converted
     

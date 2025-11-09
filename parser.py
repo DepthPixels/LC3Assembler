@@ -31,6 +31,18 @@ def parse_lines(file_lines):
       if len(split_code) > 1:
         operands = split_code[1:] + operands
       
+      if len(operands) > 1:
+        if operands[0] == ".STRINGZ":
+          print("Got here")
+          if operands[1].startswith('"') and operands[1].endswith('"'):
+            string_content = operands[1][1:-1]
+            for char in string_content:
+              ascii_value = ord(char)
+              binary_value = format(ascii_value, '016b')
+              parsed_data.append((".FILL", [f"{binary_value}"]))
+            parsed_data.append((".FILL", ['0x0000']))
+          continue      
+            
       parsed_data.append((opcode, operands))
       
       if opcode == ".END":

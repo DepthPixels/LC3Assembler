@@ -2,9 +2,9 @@ import sys
 from parser import parse_lines
 import mapping
 
-file_location = None
+file_location = ""
 
-print("\n LC-3 Assembler v0.95 \n")
+print("\n LC-3 Assembler v0.96 \n")
 
 sys.argv = sys.argv[1:]
 
