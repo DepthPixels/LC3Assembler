@@ -35,5 +35,7 @@ def parse_lines(file_lines):
       
       if opcode == ".END":
         break
+      
+      print(f"Parsed Line: Opcode: {opcode}, Operands: {operands}")
     
   return parsed_data

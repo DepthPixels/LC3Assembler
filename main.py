@@ -32,8 +32,6 @@ print("\n PARSING \n")
 with open(file_location, 'r') as file:
     file_lines = file.readlines()
     parsed_lines = parse_lines(file_lines)
-    for line in parsed_lines:
-        print(f"Opcode: {line[0]}, Operands: {line[1]}")
         
 print("\n MAPPING \n")
     
