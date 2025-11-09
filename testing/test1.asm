@@ -12,5 +12,6 @@
     JSR #255
     RET
     YES .FILL 0x2002
+    .STRINGZ "YO"
 
 .END

@@ -125,7 +125,7 @@ def map_special_opcode(opcode, operands, pc):
         converted = (mapped_opcode, mapped_operand)
     elif opcode in short_ops:
         converted = short_ops[opcode]
-    elif opcode in label_dict:
+    elif opcode in label_dict or opcode == ".STRINGZ":
         operands = [operands] if type(operands) == str else operands
         if len(operands) > 1:
             sub_opcode = operands[0]
