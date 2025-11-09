@@ -8,7 +8,7 @@ def parse_lines(file_lines):
   extra = []
   
   for line in file_lines:
-    if line != "\n":
+    if line != "\n" and not line.startswith(';'):
       parts = line.split(',')
       parts = [part.strip() for part in parts]
       

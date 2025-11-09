@@ -4,7 +4,7 @@ import mapping
 
 file_location = None
 
-print("\n LC-3 Assembler v0.94 \n")
+print("\n LC-3 Assembler v0.95 \n")
 
 sys.argv = sys.argv[1:]
 

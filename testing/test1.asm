@@ -1,5 +1,5 @@
 .ORIG x3000
-
+; yo im a full comment
     YO .FILL x2003
     NOT R0, R2  ; Hi im a comment
     LEA R3, #254
