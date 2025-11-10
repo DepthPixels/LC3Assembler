@@ -13,5 +13,6 @@
     RET
     YES .FILL 0x2002
     .STRINGZ "YO"
+    PEAK .FILL 0x6767
 
 .END

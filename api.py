@@ -17,14 +17,20 @@ async def assemble_code(file: UploadFile = File(...), format: str = "bin"):
         content = await file.read()
         file_lines = content.decode('utf-8').splitlines(keepends=True)
         
+        print("\n PARSING \n")
+        
         # Parse
         parsed_lines = parse_lines(file_lines)
+        
+        print("\n MAPPING \n")
         
         # Map
         converted = mapping.map_opcodes_and_operands(
             [opcode for opcode, _ in parsed_lines], 
             [operands for _, operands in parsed_lines]
         )
+        
+        print("\n WRITING \n")
         
         # Generate output
         output = io.BytesIO() if format == "obj" else io.StringIO()
@@ -47,12 +53,13 @@ async def assemble_code(file: UploadFile = File(...), format: str = "bin"):
         
         # Return response
         if format == "bin":
+            print(f"\n Current Output: \n\n{output.getvalue()}")
             return Response(content=output.getvalue(), media_type="text/plain")
         else:
             return Response(content=output.getvalue(), media_type="application/octet-stream")
             
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     import uvicorn

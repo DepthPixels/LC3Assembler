@@ -8,7 +8,7 @@ def parse_lines(file_lines):
   extra = []
   
   for line in file_lines:
-    if line != "\n" and not line.startswith(';'):
+    if line != "\n" and line != "\r\n" and not line.startswith(';'):
       parts = line.split(',')
       parts = [part.strip() for part in parts]
       
@@ -64,9 +64,7 @@ def parse_lines(file_lines):
             
       parsed_data.append((opcode, operands))
       
-      if opcode == ".END":
-        break
-      
       print(f"Parsed Line: Opcode: {opcode}, Operands: {operands}")
-    
+      
+      
   return parsed_data

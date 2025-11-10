@@ -207,6 +207,7 @@ def map_operand(opcode, operand, pc):
             elif opcode == "LDR" or opcode == "STR":
                 offset = sign_extend(offset, 6)
             elif opcode == "JSR":
+                mapped_operand.append('1')
                 offset = sign_extend(offset, 11)
             mapped_operand.append(offset)
             
