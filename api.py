@@ -1,10 +1,14 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
-from fastapi.responses import Response
+from fastapi.responses import Response, RedirectResponse
 from parser import parse_lines
 import mapping
 import io
 
 app = FastAPI(title="LC-3 Assembler API")
+
+@app.get("/")
+async def root():
+    return RedirectResponse(url="/docs")
 
 @app.post("/assemble")
 async def assemble_code(file: UploadFile = File(...), format: str = "bin"):
