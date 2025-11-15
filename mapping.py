@@ -191,8 +191,16 @@ def map_operand(opcode, operand, pc):
             elif part.startswith('0x'):
                 part = part[2:]
                 
-            value = hex_to_bin(part)
-            mapped_operand.append(value)
+            value = int(hex_to_bin(part), 2)
+            offset = value - pc
+            if opcode in ["BR", "LD", "LDI", "LEA", "ST", "STI"]:
+                offset = sign_extend(offset, 9)
+            elif opcode == "LDR" or opcode == "STR":
+                offset = sign_extend(offset, 6)
+            elif opcode == "JSR":
+                mapped_operand.append('1')
+                offset = sign_extend(offset, 11)
+            mapped_operand.append(offset)
         elif all(char == '0' or char == '1' for char in part):
             if opcode == "JSR":
                 mapped_operand.append('1')

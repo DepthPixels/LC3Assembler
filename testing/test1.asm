@@ -2,7 +2,7 @@
 ; yo im a full comment
     YO .FILL x2003
     NOT R0, R2  ; Hi im a comment
-    LEA R3, #254
+    LEA R3, x3004
     AND R0, R0, R1
     ADD R0, R0, R1
     LD R1 YES
