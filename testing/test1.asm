@@ -8,7 +8,7 @@
     LD R1 YES
     LD R0 YO
     BRnz #-2
-    HALT
+    TRAP x25
     JSR #255
     RET
     YES .FILL 0x2002

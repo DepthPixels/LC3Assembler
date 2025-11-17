@@ -181,15 +181,18 @@ def map_operand(opcode, operand, pc):
             mapped_operand.append(value)
             
         elif part.startswith('x') or part.startswith('0x'):
-            if opcode == "TRAP":
-                mapped_operand.append('0000')
-            if opcode == "JSR":
-                mapped_operand.append('1')
             # Hexadecimal value
             if part.startswith('x'):
                 part = part[1:]
             elif part.startswith('0x'):
                 part = part[2:]
+            if opcode == "TRAP":
+                mapped_operand.append('0000')
+                value = hex_to_bin(part)
+                mapped_operand.append(value)
+                continue
+            if opcode == "JSR":
+                mapped_operand.append('1')
                 
             value = int(hex_to_bin(part), 2)
             offset = value - pc
