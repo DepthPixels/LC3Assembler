@@ -32,34 +32,74 @@ def parse_lines(file_lines):
         operands = split_code[1:] + operands
       
       if len(operands) > 1:
-        if operands[0] == ".STRINGZ":
+        if operands[0] == ".STRINGZ" or operands[0] == ".STRINGZP":
           if operands[1].startswith('"') and operands[1].endswith('"'):
             string_content = operands[1][1:-1]
+            if operands[0] == ".STRINGZ":
+              for i in range(len(string_content)):
+                char = string_content[i]
+                ascii_value = ord(char)
+                binary_value = format(ascii_value, '016b')
+                if i == 0:
+                  parsed_data.append((opcode, [".STRINGZ", ".FILL", f"{binary_value}"]))
+                  print(f"Parsed Line: Opcode: {parsed_data[-1][0]}, Operands: {parsed_data[-1][1]}")
+                else:
+                  parsed_data.append((".FILL", [f"{binary_value}"]))
+                  print(f"Parsed Line: Opcode: {parsed_data[-1][0]}, Operands: {parsed_data[-1][1]}")
+                
+              parsed_data.append((".FILL", ['0x0000']))
+            elif operands[0] == ".STRINGZP":
+              for i in range(0, len(string_content), 2):
+                char = string_content[i]
+                if len(string_content) >= i+1:
+                  char2 = string_content[i+1]
+                else:
+                  char2 = "\0"
+                ascii_value = ord(char)
+                ascii_value2 = ord(char2)
+                binary_value = format(ascii_value2, '08b') + format(ascii_value, '08b')
+                if i == 0:
+                  parsed_data.append((opcode, [".STRINGZP", ".FILL", f"{binary_value}"]))
+                  print(f"Parsed Line: Opcode: {parsed_data[-1][0]}, Operands: {parsed_data[-1][1]}")
+                else:
+                  parsed_data.append((".FILL", [f"{binary_value}"]))
+                  print(f"Parsed Line: Opcode: {parsed_data[-1][0]}, Operands: {parsed_data[-1][1]}")
+              parsed_data.append((".FILL", ['0x0000']))
+          continue
+        
+      if opcode == ".STRINGZ" or opcode == ".STRINGZP":
+        if operands[0].startswith('"') and operands[0].endswith('"'):
+          string_content = operands[0][1:-1]
+          if opcode == ".STRINGZ":
             for i in range(len(string_content)):
               char = string_content[i]
               ascii_value = ord(char)
               binary_value = format(ascii_value, '016b')
               if i == 0:
-                parsed_data.append((opcode, [".STRINGZ", ".FILL", f"{binary_value}"]))
+                parsed_data.append((".STRINGZ", [".FILL", f"{binary_value}"]))
+                print(f"Parsed Line: Opcode: {parsed_data[-1][0]}, Operands: {parsed_data[-1][1]}")
               else:
                 parsed_data.append((".FILL", [f"{binary_value}"]))
+                print(f"Parsed Line: Opcode: {parsed_data[-1][0]}, Operands: {parsed_data[-1][1]}")
               
             parsed_data.append((".FILL", ['0x0000']))
-          continue 
-        
-      if opcode == ".STRINGZ":
-        if operands[0].startswith('"') and operands[0].endswith('"'):
-          string_content = operands[0][1:-1]
-          for i in range(len(string_content)):
-            char = string_content[i]
-            ascii_value = ord(char)
-            binary_value = format(ascii_value, '016b')
-            if i == 0:
-              parsed_data.append((".STRINGZ", [".FILL", f"{binary_value}"]))
-            else:
-              parsed_data.append((".FILL", [f"{binary_value}"]))
-            
-          parsed_data.append((".FILL", ['0x0000']))
+          elif opcode == ".STRINGZP":
+            for i in range(0, len(string_content), 2):
+              char = string_content[i]
+              if len(string_content)-1 >= (i+1):
+                char2 = string_content[(i+1)]
+              else:
+                char2 = "\0"
+              ascii_value = ord(char)
+              ascii_value2 = ord(char2)
+              binary_value = format(ascii_value2, '08b') + format(ascii_value, '08b')
+              if i == 0:
+                parsed_data.append((".STRINGZP", [".FILL", f"{binary_value}"]))
+                print(f"Parsed Line: Opcode: {parsed_data[-1][0]}, Operands: {parsed_data[-1][1]}")
+              else:
+                parsed_data.append((".FILL", [f"{binary_value}"]))
+                print(f"Parsed Line: Opcode: {parsed_data[-1][0]}, Operands: {parsed_data[-1][1]}")
+            parsed_data.append((".FILL", ['0x0000']))
         continue        
             
       parsed_data.append((opcode, operands))

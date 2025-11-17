@@ -12,7 +12,7 @@
     JSR #255
     RET
     YES .FILL 0x2002
-    .STRINGZ "YO"
+    .STRINGZP "YOS"
     PEAK .FILL 0x6767
 
 .END
