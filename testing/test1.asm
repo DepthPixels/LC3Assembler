@@ -5,6 +5,7 @@
     LEA R3, x3004
     AND R0, R0, R1
     ADD R0, R0, R1
+    ; tabbed comment
     LD R1 YES
     LD R0 YO
     BRnz #-2
