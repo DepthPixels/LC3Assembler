@@ -1,3 +1,5 @@
+pseudo_ops = ['HALT', 'GETC', 'IN', 'PUTS', 'PUTSP']
+
 def parse_lines(file_lines):
   """
   Reads lines from a file and returns them as a list,
@@ -30,10 +32,15 @@ def parse_lines(file_lines):
       opcode = split_code[0]
       if len(split_code) > 1:
         operands = split_code[1:] + operands
+        
+      #if len(operands) == 0:
+        
       
       if len(operands) > 1:
         if operands[0] == ".STRINGZ" or operands[0] == ".STRINGZP":
-          if operands[1].startswith('"') and operands[1].endswith('"'):
+          operands = operands[1:]
+          operands = "".join(operands)
+          if operands.startswith('"') and operands.endswith('"'):
             string_content = operands[1][1:-1]
             if operands[0] == ".STRINGZ":
               for i in range(len(string_content)):
@@ -66,10 +73,12 @@ def parse_lines(file_lines):
                   print(f"Parsed Line: Opcode: {parsed_data[-1][0]}, Operands: {parsed_data[-1][1]}")
               parsed_data.append((".FILL", ['0x0000']))
           continue
-        
+      
       if opcode == ".STRINGZ" or opcode == ".STRINGZP":
-        if operands[0].startswith('"') and operands[0].endswith('"'):
-          string_content = operands[0][1:-1]
+        operands = "".join(operands)
+        print(operands)
+        if operands[0].startswith('"') and operands.endswith('"'):
+          string_content = operands[1:-1]
           if opcode == ".STRINGZ":
             for i in range(len(string_content)):
               char = string_content[i]
