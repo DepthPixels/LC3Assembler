@@ -65,7 +65,7 @@ def map_opcodes_and_operands(opcodes, operands):
     pc = 0
     for i in range(len(opcodes)):
         if mapped_lines:
-            pc = int(mapped_lines[0], 2) + i
+            pc = int(mapped_lines[0], 2) + i - 1
             print(f"Mapping line {i}: Opcode: {opcodes[i]}, Operands: {operands[i]}, at PC: {hex(pc)}")
         if opcodes[i] in opcode_dict:
             mapped_opcode = opcode_dict[opcodes[i]]
@@ -97,11 +97,23 @@ def label_parse(opcodes, operands):
     orig = None
     for i in range(len(opcodes)):
         if orig:
-            pc = int(orig, 2) + i
+            pc = int(orig, 2) + i - 1
         if opcodes[i] == ".ORIG":
             orig = map_special_opcode(opcodes[i], operands[i], pc)
-        elif opcodes[i] not in opcode_dict and opcodes[i][:2] != "BR" and opcodes[i] not in short_ops and opcodes[i] not in hex_convert_pseudo_ops and opcodes[i] != ".END":
-            label_dict[opcodes[i]] = (pc-1)
+        else:
+            didnt_find_opcode = True
+            opcode = opcodes[i]
+            operand_index = 0
+            while didnt_find_opcode:
+                if opcode not in opcode_dict and opcode[:2] != "BR" and opcode not in short_ops and opcode not in hex_convert_pseudo_ops and opcode != ".END":
+                    label_dict[opcode] = (pc-1)
+                    if len(operands[i]) > operand_index+1:
+                        opcode = operands[i][operand_index]
+                        operand_index += 1
+                    else:
+                        break
+                else:
+                    didnt_find_opcode = False
             
     print(f"Label Dictionary: {label_dict}")
 

@@ -6,6 +6,7 @@
     AND R0, R0, R1
     ADD R0, R0, R1
     ; tabbed comment
+    HELLO HI HOLA .FILL x6767   ; tis a triple label
     LD R1 YES
     LD R0 YO
     BRnz #-2
