@@ -39,10 +39,10 @@ def parse_lines(file_lines):
       if len(operands) > 1:
         if operands[0] == ".STRINGZ" or operands[0] == ".STRINGZP":
           operands_new = operands[1:]
-          print(operands)
           operands_new = " ".join(operands_new)
           if operands_new.startswith('"') and operands_new.endswith('"'):
             string_content = operands_new[1:-1]
+            string_content = string_content.encode('utf-8').decode('unicode_escape')
             if operands[0] == ".STRINGZ":
               for i in range(len(string_content)):
                 char = string_content[i]
@@ -59,7 +59,7 @@ def parse_lines(file_lines):
             elif operands[0] == ".STRINGZP":
               for i in range(0, len(string_content), 2):
                 char = string_content[i]
-                if len(string_content) >= i+2:
+                if len(string_content)-1 >= i+1:
                   char2 = string_content[i+1]
                 else:
                   char2 = "\0"
@@ -77,9 +77,9 @@ def parse_lines(file_lines):
       
       if opcode == ".STRINGZ" or opcode == ".STRINGZP":
         operands = " ".join(operands)
-        print(operands)
         if operands[0].startswith('"') and operands.endswith('"'):
           string_content = operands[1:-1]
+          string_content = string_content.encode('utf-8').decode('unicode_escape')
           if opcode == ".STRINGZ":
             for i in range(len(string_content)):
               char = string_content[i]
