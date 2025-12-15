@@ -33,7 +33,7 @@ label_dict = {}
 
 hex_convert_pseudo_ops = [".ORIG", ".FILL"]
 
-short_ops = {"GETC": "1111000000100000", "OUT": "1111000000100001", "PUTS": "1111000000100010", "IN": "1111000000100011", "PUTSP": "1111000000100100", "HALT": "1111000000100101"}
+traps_shorthands = {"GETC": "1111000000100000", "OUT": "1111000000100001", "PUTS": "1111000000100010", "IN": "1111000000100011", "PUTSP": "1111000000100100", "HALT": "1111000000100101"}
 
 def sign_extend(value, bits):
     """
@@ -105,7 +105,7 @@ def label_parse(opcodes, operands):
             opcode = opcodes[i]
             operand_index = 0
             while didnt_find_opcode:
-                if opcode not in opcode_dict and opcode[:2] != "BR" and opcode not in short_ops and opcode not in hex_convert_pseudo_ops and opcode != ".END":
+                if opcode not in opcode_dict and opcode[:2] != "BR" and opcode not in traps_shorthands and opcode not in hex_convert_pseudo_ops and opcode != ".END":
                     label_dict[opcode] = (pc-1)
                     if len(operands[i]) > operand_index+1:
                         opcode = operands[i][operand_index]
@@ -135,8 +135,8 @@ def map_special_opcode(opcode, operands, pc):
         mapped_opcode = opcode_dict[opcode]
         mapped_operand = map_operand(opcode, operands, pc)
         converted = (mapped_opcode, mapped_operand)
-    elif opcode in short_ops:
-        converted = short_ops[opcode]
+    elif opcode in traps_shorthands:
+        converted = traps_shorthands[opcode]
     elif opcode in label_dict or opcode == ".STRINGZ" or opcode == ".STRINGZP":
         operands = [operands] if type(operands) == str else operands
         if len(operands) > 1:
